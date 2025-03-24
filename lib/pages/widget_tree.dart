@@ -97,6 +97,16 @@ class _WidgetTreeState extends State<WidgetTree> {
             TextButton(
               onPressed: () {
                 setState(() {
+                  if (titleController.text.isEmpty ||
+                      lastChapterController.text.isEmpty ||
+                      lastPageController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please fill all fields'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
                   books.add({
                     'title': titleController.text,
                     'lastChapter': lastChapterController.text,

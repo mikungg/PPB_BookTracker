@@ -5,11 +5,13 @@ class BooksCard extends StatelessWidget {
   final String lastChapter;
   final int lastPage;
   final VoidCallback delete;
+  final VoidCallback edit;
   BooksCard({
     required this.title,
     required this.lastChapter,
     required this.lastPage,
     required this.delete,
+    required this.edit,
   });
 
   @override
@@ -27,14 +29,32 @@ class BooksCard extends StatelessWidget {
             ),
             SizedBox(height: 6.0),
             Text(
-              lastChapter + ', Page ' + lastPage.toString(),
+              'Chapter ' + lastChapter + ', Page ' + lastPage.toString(),
               style: TextStyle(fontSize: 14.0, color: Colors.grey[800]),
             ),
             SizedBox(height: 8.0),
-            TextButton.icon(
-              onPressed: delete,
-              label: Text('delete book'),
-              icon: Icon(Icons.delete),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: edit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurpleAccent,
+                    fixedSize: Size(110, 40),
+                  ),
+                  label: Text('Edit', style: TextStyle(color: Colors.white)),
+                  icon: Icon(Icons.edit, color: Colors.white),
+                ),
+                ElevatedButton.icon(
+                  onPressed: delete,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    fixedSize: Size(110, 40),
+                  ),
+                  label: Text('Delete', style: TextStyle(color: Colors.white)),
+                  icon: Icon(Icons.delete, color: Colors.white),
+                ),
+              ],
             ),
           ],
         ),

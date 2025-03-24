@@ -27,11 +27,70 @@ class _ColletionPageState extends State<ColletionPage> {
                           widget.books.remove(book);
                         });
                       },
+                      edit: () {
+                        editBook(book);
+                      },
                     ),
                   )
                   .toList(),
         ),
       ),
+    );
+  }
+
+  void editBook(Map book) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        final TextEditingController titleController = TextEditingController(
+          text: book['title'],
+        );
+        final TextEditingController lastChapterController =
+            TextEditingController(text: book['lastChapter']);
+        final TextEditingController lastPageController = TextEditingController(
+          text: book['lastPage'].toString(),
+        );
+
+        return AlertDialog(
+          title: Text('Edit Book'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(labelText: 'Title'),
+              ),
+              TextField(
+                controller: lastChapterController,
+                decoration: InputDecoration(labelText: 'Last Chapter'),
+              ),
+              TextField(
+                controller: lastPageController,
+                decoration: InputDecoration(labelText: 'Last Page'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  book['title'] = titleController.text;
+                  book['lastChapter'] = lastChapterController.text;
+                  book['lastPage'] = int.parse(lastPageController.text);
+                });
+                Navigator.pop(context);
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
