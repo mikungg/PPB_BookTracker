@@ -14,17 +14,10 @@ class _WidgetTreeState extends State<WidgetTree> {
   int myIndex = 0;
 
   List books = ApiDummy().getBooks();
-  late List pages;
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController lastChapterController = TextEditingController();
   final TextEditingController lastPageController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    pages = [ColletionPage(books: books), RecentPage(books: books)];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +27,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         backgroundColor: Colors.blue,
         centerTitle: true,
       ),
-      body: pages[myIndex],
+      body: getPage(myIndex),
       drawer: SafeArea(child: Drawer()),
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(),
@@ -62,6 +55,17 @@ class _WidgetTreeState extends State<WidgetTree> {
         ],
       ),
     );
+  }
+
+  Widget getPage(int index) {
+    switch (index) {
+      case 0:
+        return ColletionPage(books: books);
+      case 1:
+        return RecentPage(books: books);
+      default:
+        return Container();
+    }
   }
 
   void addBook() {
