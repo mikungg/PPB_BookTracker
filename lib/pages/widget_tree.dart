@@ -16,6 +16,10 @@ class _WidgetTreeState extends State<WidgetTree> {
   List books = ApiDummy().getBooks();
   late List pages;
 
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController lastChapterController = TextEditingController();
+  final TextEditingController lastPageController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -37,15 +41,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
         splashColor: Colors.blueAccent,
-        onPressed: () {
-          setState(() {
-            books.add({
-              'title': 'Book ${books.length + 1}',
-              'lastPage': 0,
-              'lastChapter': 'Chapter 1',
-            });
-          });
-        },
+        onPressed: addBook,
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -65,6 +61,58 @@ class _WidgetTreeState extends State<WidgetTree> {
           BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Recent'),
         ],
       ),
+    );
+  }
+
+  void addBook() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Add Book'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: titleController,
+                decoration: InputDecoration(hintText: 'Title'),
+              ),
+              TextField(
+                controller: lastChapterController,
+                decoration: InputDecoration(hintText: 'Last Chapter'),
+              ),
+              TextField(
+                controller: lastPageController,
+                decoration: InputDecoration(hintText: 'Last Page'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  books.add({
+                    'title': titleController.text,
+                    'lastChapter': lastChapterController.text,
+                    'lastPage': int.parse(lastPageController.text),
+                  });
+                });
+                titleController.clear();
+                lastChapterController.clear();
+                lastPageController.clear();
+                Navigator.pop(context);
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
