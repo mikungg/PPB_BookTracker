@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:objectbox/objectbox.dart';
+import '../models.dart';
 
 class RecentPage extends StatelessWidget {
-  final List books;
-  const RecentPage({super.key, required this.books});
+  final Box<Book> bookBox;
+  const RecentPage({super.key, required this.bookBox});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,9 @@
-import 'package:app_assignment_crud/api/api_dummy.dart';
 import 'package:app_assignment_crud/pages/collection_page.dart';
 import 'package:app_assignment_crud/pages/recent_page.dart';
 import 'package:flutter/material.dart';
+import 'package:objectbox/objectbox.dart';
+import '../models.dart';
+import '../db/db.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({super.key});
@@ -13,7 +15,7 @@ class WidgetTree extends StatefulWidget {
 class _WidgetTreeState extends State<WidgetTree> {
   int myIndex = 0;
 
-  List books = ApiDummy().getBooks();
+  final bookBox = objectbox.store.box<Book>();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController lastChapterController = TextEditingController();
@@ -60,9 +62,9 @@ class _WidgetTreeState extends State<WidgetTree> {
   Widget getPage(int index) {
     switch (index) {
       case 0:
-        return ColletionPage(books: books);
+        return ColletionPage(bookBox: bookBox);
       case 1:
-        return RecentPage(books: books);
+        return RecentPage(bookBox: bookBox);
       default:
         return Container();
     }
@@ -111,11 +113,13 @@ class _WidgetTreeState extends State<WidgetTree> {
                       ),
                     );
                   }
-                  books.add({
-                    'title': titleController.text,
-                    'lastChapter': lastChapterController.text,
-                    'lastPage': int.parse(lastPageController.text),
-                  });
+                  bookBox.put(
+                    Book(
+                      title: titleController.text,
+                      lastChapter: lastChapterController.text,
+                      lastPage: int.parse(lastPageController.text),
+                    ),
+                  );
                 });
                 titleController.clear();
                 lastChapterController.clear();
